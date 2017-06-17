@@ -6,4 +6,4 @@ LABEL fedora-linux
     MENU DEFAULT
     MENU LABEL Install Fedora 25
     KERNEL http://129.21.171.72/fedora/fedora/linux/releases/25/Server/x86_64/os/images/pxeboot/vmlinuz
-    APPEND initrd=http://129.21.171.72/fedora/fedora/linux/releases/25/Server/x86_64/os/images/pxeboot/initrd.img inst.stage2=http://129.21.171.72/fedora/fedora/linux/releases/25/Server/x86_64/os ip=dhcp inst.ks=http://10.2.7.7:8080/kickstart
+    APPEND initrd=http://129.21.171.72/fedora/fedora/linux/releases/25/Server/x86_64/os/images/pxeboot/initrd.img inst.stage2=http://129.21.171.72/fedora/fedora/linux/releases/25/Server/x86_64/os ip=dhcp inst.ks=http://10.2.0.7:8080/kickstart

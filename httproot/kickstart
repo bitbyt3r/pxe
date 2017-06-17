@@ -38,16 +38,13 @@ salt-minion
 %post
 
 logger "Starting postinstall"
-exec < /dev/tty3 > /dev/tty3
+exec < /dev/tty3 > /dev/tty3 2> /dev/tty3
 #changing to VT 3 so that we can see whats going on....
 /usr/bin/chvt 3
 echo "Beginning post-install operations..."
 echo "Adding nameserver"
 echo "nameserver 10.2.0.1" > /etc/resolv.conf
-echo "Updating system time"
-/usr/sbin/ntpdate -sub 0.fedora.pool.ntp.org
-echo "Syncing hardware clock"
-/usr/sbin/hwclock --systohc
+echo "10.2.0.7 salt.hackafe.net salt" >> /etc/hosts
 echo "Creating /etc/salt/minion"
 cat > /etc/salt/minion << EOF
 default_include: minion.d/*.conf
@@ -58,15 +55,18 @@ ipv6: True
 append_domain: hackafe.net
 acceptance_wait_time: 10
 EOF
+
+curl http://10.2.0.7:8080/hostnames | grep `cat /sys/class/net/ens18/address` | cut -d "," -f 2 > /etc/salt/minion_id
+
 echo "Enabling salt-minion"
 systemctl enable salt-minion
 echo "Attempting to get salt cert"
-salt-call --no-color --grains
+salt-call --grains
 sleep 10
 echo "Running salt to jumpstart configuration"
 salt-call state.highstate
 echo "Complete"
-
+sleep 10
 
 %end
 
