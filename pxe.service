@@ -1,0 +1,11 @@
+[Unit]
+Description=All-in-one pxe server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/root/pxe/run.sh
+WorkingDirectory=/root/pxe
+
+[Install]
+WantedBy=multi-user.target

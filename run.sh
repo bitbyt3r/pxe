@@ -1,4 +1,6 @@
 #!/usr/bin/bash
+echo "Starting up..."
+
 pip install ptftpd
 
 firewall-cmd --add-service=tftp --permanent
