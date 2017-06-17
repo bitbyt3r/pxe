@@ -1,1 +1,70 @@
-testing
+install
+
+# Installation logging level
+logging --level=info
+
+# Sets up the authentication options for the system.
+authconfig --enableshadow
+
+# Sets the system's root password
+rootpw --iscrypted $6$ewkWM2KKszCj9Lis$2gJfum.hwq31rjH/XuAlR67J8TaJuIVPIkXwYoarSbweZWIbPFjaZ5g0ZQijmdD6RV/uF/JaV5z0Ip9qP5jHF0
+
+url --url http://129.21.171.72/fedora/fedora/linux/releases/25/Server/x86_64/os
+repo --name fedora --baseurl http://129.21.171.72/fedora/fedora/linux/releases/25/Everything/x86_64/os/
+repo --name fedora-updates --baseurl http://129.21.171.72/fedora/fedora/linux/updates/25/x86_64
+
+lang en_US.UTF-8
+keyboard us
+timezone --utc America/New_York
+
+# Configures network information for the system.
+network  --device=ens18 --bootproto=dhcp --onboot=on
+
+bootloader --location=mbr
+# Clear the Master Boot Record
+zerombr
+
+clearpart --all --initlabel
+part / --fstype="ext4" --size=1 --grow
+
+firstboot --disabled
+reboot
+
+%packages 
+@core
+salt-minion
+%end
+
+%post
+
+logger "Starting postinstall"
+exec < /dev/tty3 > /dev/tty3
+#changing to VT 3 so that we can see whats going on....
+/usr/bin/chvt 3
+
+#update local time
+echo "updating system time"
+/usr/sbin/ntpdate -sub 0.fedora.pool.ntp.org
+/usr/sbin/hwclock --systohc
+
+echo "nameserver 10.2.0.1" > /etc/resolv.conf
+
+cat > /etc/salt/minion << EOF
+default_include: minion.d/*.conf
+master: salt.hackafe.net
+retry_dns: 10
+user: root
+ipv6: True
+append_domain: hackafe.net
+acceptance_wait_time: 10
+EOF
+systemctl enable salt-minion
+salt-call --no-color --grains
+sleep 10
+echo "Running salt to jumpstart configuration"
+salt-call state.highstate
+echo "Complete"
+
+
+%end
+
