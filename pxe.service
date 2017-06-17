@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-ExecStart=/root/pxe/run.sh
-WorkingDirectory=/root/pxe
+ExecStart=/opt/pxe/run.sh
+WorkingDirectory=/opt/pxe
 
 [Install]
 WantedBy=multi-user.target
