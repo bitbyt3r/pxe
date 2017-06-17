@@ -1,5 +1,5 @@
 #!/usr/bin/bash
-echo "Starting PXE Server"
+pip install ptftpd
 
 firewall-cmd --add-service=tftp --permanent
 firewall-cmd --add-port=8080/tcp --permanent
