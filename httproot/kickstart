@@ -56,8 +56,10 @@ append_domain: hackafe.net
 acceptance_wait_time: 10
 EOF
 
-curl http://10.2.0.7:8080/hostnames | grep `cat /sys/class/net/ens18/address` | cut -d "," -f 2 > /etc/salt/minion_id
-
+curl http://10.2.0.7:8080/hostnames | grep `cat /sys/class/net/ens18/address` | cut -d "," -f 1 > /etc/salt/minion_id
+echo -n "I am minion id:"
+cat /etc/salt/minion_id
+echo ""
 echo "Enabling salt-minion"
 systemctl enable salt-minion
 echo "Attempting to get salt cert"
