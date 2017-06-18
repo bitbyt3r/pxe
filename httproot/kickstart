@@ -60,6 +60,8 @@ curl http://10.2.0.7:8080/hostnames | grep `cat /sys/class/net/ens18/address` | 
 echo -n "I am minion id:"
 cat /etc/salt/minion_id
 echo ""
+cp /etc/salt/minion_id /etc/hostname
+hostname `cat /etc/salt/minion_id`
 echo "Enabling salt-minion"
 systemctl enable salt-minion
 echo "Attempting to get salt cert"
