@@ -52,7 +52,6 @@ master: salt.hackafe.net
 retry_dns: 10
 user: root
 ipv6: True
-append_domain: hackafe.net
 acceptance_wait_time: 10
 EOF
 
